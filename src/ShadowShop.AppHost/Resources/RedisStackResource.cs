@@ -26,12 +26,9 @@ public static class RedisStackBuilderExtensions
 {
     public static IResourceBuilder<RedisStackResource> AddRedisStack(
         this IDistributedApplicationBuilder builder, string name, 
-        int? serverPort = null, int? insightPort = null,  IResourceBuilder<ParameterResource>? password = null)
+        int? serverPort = null, int? insightPort = null)
     {
-        
         var redisStack = new RedisStackResource(name);
-        var passwordParameter = password?.Resource;
-        redisStack.PasswordParameter = passwordParameter;        
 
         return builder.AddResource(redisStack)
             .WithImage("redis/redis-stack")

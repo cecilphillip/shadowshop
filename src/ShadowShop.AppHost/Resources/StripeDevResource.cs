@@ -8,11 +8,12 @@ public class StripeDevResource(string name, string command, string workingDir = 
 public static class StripeCliBuilderExtensions
 {
     public static IResourceBuilder<StripeDevResource> AddStripeDevProxy(this IDistributedApplicationBuilder builder,
-        string name, IResourceBuilder<ParameterResource> secretKey, IResourceBuilder<ProjectResource> project, string path)
+        string name, IResourceBuilder<ParameterResource> secretKey, IResourceBuilder<ProjectResource> project,
+        string path)
     {
-     var webhookEndpoint =   ReferenceExpression.Create(
+        var webhookEndpoint = ReferenceExpression.Create(
             $"{project.Resource.GetEndpoint("https")}{path}");
-     
+
         var scriptFileName = "listen.sh";
         return builder.AddResource(new StripeDevResource(name, "bash"))
             .WithArgs(context => { context.Args.Add(scriptFileName); })

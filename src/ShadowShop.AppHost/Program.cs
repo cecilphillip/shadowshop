@@ -21,8 +21,9 @@ var rabbitPwd = builder.AddParameter("rabbitmqpassword", true);
 var rmq = builder.AddRabbitMQ("rmq", password: rabbitPwd)
     .WithManagementPlugin(15672);
 
-var redisPwd = builder.AddParameter("redispwd", true);;
-var redisCache = builder.AddRedisStack("basketcache", password:redisPwd)
+var redisPwd = builder.AddParameter("redispwd", true);
+var redisCache = builder.AddRedisStack("basketcache")
+    .WithPassword(redisPwd)
     .WithConfiguration("./.config/redis/redis.conf");
 
 // Application Projects
