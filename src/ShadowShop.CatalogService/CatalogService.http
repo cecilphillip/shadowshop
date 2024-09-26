@@ -1,0 +1,6 @@
+@ShadowShop.CatalogService_HostAddress = http://localhost:5267
+
+GET {{ShadowShop.CatalogService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
