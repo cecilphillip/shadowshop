@@ -1,0 +1,69 @@
+﻿@using Stripe
+@using Stripe.Checkout
+@inject BasketServiceClient BasketClient
+@inject NavigationManager Navigation
+@inject IStripeClient StripeClient
+
+<div class="justify-content-end">
+    @if (basketIsAvailable)
+    {
+        <EditForm Model="this" FormName="checkout" OnSubmit="HandleCheckout" Enhance="true">
+            <button type="submit" class="align-content-end cart-button">
+                <span class="fa-stack fa-lg cart-stack pa-4">
+                    <i class="fa fa-shopping-cart fa-stack-4x"></i>
+                    <i class="fa fa-stack-1x badge">
+                        @(customerBasket?.TotalItemCount ?? 0)
+                    </i>
+                </span>
+            </button>
+        </EditForm>
+    }
+</div>
+
+@code {
+    CustomerBasket? customerBasket;
+    bool basketIsAvailable;
+
+    [Parameter]
+    public EventCallback<bool> BasketAvailabilityChanged { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        (customerBasket, basketIsAvailable) = await BasketClient.GetBasketAsync("user");
+
+        await BasketAvailabilityChanged.InvokeAsync(basketIsAvailable);
+    }
+
+    private async Task HandleCheckout()
+    {
+        if (customerBasket is not null)
+        {
+            await BasketClient.CheckoutBasketAsync("user");
+            var checkoutUrl = await GetCheckoutUrl();
+            Navigation.NavigateTo(checkoutUrl);
+        }
+
+        // Preserve query string
+        Navigation.NavigateTo($"/{new Uri(Navigation.Uri).Query}");
+    }
+    
+    private async Task<string> GetCheckoutUrl()
+    {
+        var lineItems = customerBasket!.Items.Select(i => new SessionLineItemOptions
+        {
+            Price = i.StripePriceId,
+            Quantity = i.Quantity
+        });
+        
+       var sessionsService = new SessionService(StripeClient);
+       var session = await sessionsService.CreateAsync(new SessionCreateOptions
+       {
+           Mode = "payment",
+           LineItems = lineItems.ToList(),
+           SuccessUrl = $"{Navigation.BaseUri}success?session_id={{CHECKOUT_SESSION_ID}}",
+           CancelUrl = Navigation.BaseUri
+       });
+
+       return session.Url;
+    }
+}

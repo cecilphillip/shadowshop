@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.RabbitMQ.Client" Version="8.2.0" />
+    <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="8.2.0" />
+    <PackageReference Include="Stripe.net" Version="45.13.0" />
+    <PackageReference Include="Yarp.ReverseProxy" Version="2.2.0" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.65.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.66.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ShadowShop.Service.Extensions\ShadowShop.Service.Extensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\ShadowShop.BasketService\Models\BasketItem.cs" Link="Models\BasketItem.cs" />
+    <Compile Include="..\ShadowShop.BasketService\Models\CustomerBasket.cs" Link="Models\CustomerBasket.cs" />
+    <Compile Include="..\ShadowShop.BasketService\Models\DecimalValue.cs" Link="Models\DecimalValue.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\ShadowShop.BasketService\Protos\basket.proto" GrpcServices="Client" Link="BasketService\Protos\basket.proto" />
+  </ItemGroup>
+  
+</Project>

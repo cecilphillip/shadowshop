@@ -1,0 +1,48 @@
+@page "/Success"
+@using Stripe
+@using Stripe.Checkout
+
+@inject IStripeClient StripeClient
+
+<PageTitle>Checkout Successful</PageTitle>
+
+<header class="d-flex align-items-center justify-content-center">
+    <h1 class="app-name pa-4">&lt;ShadowShop /&gt;</h1>
+    <div class="flex-spacer"></div>
+    <h2 class="text-align-center"></h2>
+    <div class="flex-spacer"></div>
+    <a href="/">Back to Catalog</a>
+</header>
+
+<div class="container">
+        <div class="grid-item" data-id="1">
+            <div class="grid-item-content">
+                <div class="grid-item-text">
+                    <h4>Checkout Successful!</h4>
+                    <p class="item-description">Your Order is being processed</p>
+                    @if(CheckoutSession != null)
+                    {
+                        <p>Payment Status: @CheckoutSession.PaymentStatus</p>
+                        <p>Payment Amount: @(string.Format("{0:C2}",CheckoutSession.AmountTotal / 100.00m))</p>
+                    }
+                </div>
+            </div>
+        </div>
+</div>
+
+<AppFooter/>
+
+@code
+{
+    [SupplyParameterFromQuery(Name = "session_id")]
+    public string? SessionId { get; set; }
+    
+    public Session? CheckoutSession { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var sessionsService = new SessionService(StripeClient);
+        CheckoutSession = await sessionsService.GetAsync(SessionId,
+            new() { Expand = new List<string> { "payment_intent" } });
+    }
+}
