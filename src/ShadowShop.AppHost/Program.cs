@@ -32,6 +32,7 @@ builder.AddProject<Projects.ShadowShop_CatalogInitializer>("catalogInitializer")
     .WithReference(catalogDb);
 
 builder.AddProject<Projects.ShadowShop_WorkflowProcessor>("workflowprocessor")
+    .WithReference(grafanaStack)
     .WithReference(vault)
     .WithReference(temporalDev)
     .WithReference(rmq);
@@ -45,10 +46,10 @@ var basketService = builder.AddProject<Projects.ShadowShop_BasketService>("baske
     .WithReference(redisCache);
 
 var frontend = builder.AddProject<Projects.ShadowShop_Frontend>("frontend")
-    .WithReference(grafanaStack)
     .WithReference(basketService)
     .WithReference(catalogService)
     .WithReference(rmq)
+    .WithReference(grafanaStack)
     .WithReference(vault);
 
 var stripeSecretKey = builder.AddParameter("stripesecretkey", true);

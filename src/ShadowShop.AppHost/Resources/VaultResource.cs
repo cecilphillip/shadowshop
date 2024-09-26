@@ -13,7 +13,7 @@ public class VaultServerResource(string name) : ContainerResource(name), IResour
 public static class VaultServerBuilderExtensions
 {
     public static IResourceBuilder<VaultServerResource> AddVaultDevServer(this IDistributedApplicationBuilder builder,
-        string name, int? port = null, string? rootTokenId = VaultServerResource.DefaultTokenId)
+        string name, int port = VaultServerResource.DefaultContainerPort, string? rootTokenId = VaultServerResource.DefaultTokenId)
     {
         var address = $"0.0.0.0:{VaultServerResource.DefaultContainerPort}";
         var apiAddress = $"http://{address}";

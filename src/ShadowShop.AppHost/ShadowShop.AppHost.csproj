@@ -26,14 +26,9 @@
 
   <ItemGroup>
     <Content Include=".config\redis\redis.conf" />
-    <Content Include=".config\stripe\Dockerfile" />
     <Content Include=".config\stripe\listen.sh" />
     <Content Include=".config\temporal\Dockerfile" />
     <Content Include=".config\vault\setup.sh" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include=".config\redis\data\" />
   </ItemGroup>
 
 </Project>

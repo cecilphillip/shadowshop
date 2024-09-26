@@ -14,7 +14,7 @@ public static class TemporalDevBuilderExtensions
     public static IResourceBuilder<TemporalDevResource> AddTemporalDevServer(
         this IDistributedApplicationBuilder builder, string name = "temporal-dev", string nameSpace = "",
         int? servicePort = null, int targetServicePort = TemporalDevResource.DefaultServiceEndpointPort,
-        int? uiPort = null, int targetUiPort = TemporalDevResource.DefaultUIEndpointPort)
+        int uiPort = TemporalDevResource.DefaultUIEndpointPort, int targetUiPort = TemporalDevResource.DefaultUIEndpointPort)
     {
         return builder.AddResource(new TemporalDevResource(name))
             .WithImage("")

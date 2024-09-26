@@ -26,7 +26,7 @@ public static class RedisStackBuilderExtensions
 {
     public static IResourceBuilder<RedisStackResource> AddRedisStack(
         this IDistributedApplicationBuilder builder, string name, 
-        int? serverPort = null, int? insightPort = null)
+        int? serverPort = null, int insightPort = RedisStackResource.DefaultInsightEndpointPort)
     {
         var redisStack = new RedisStackResource(name);
 
