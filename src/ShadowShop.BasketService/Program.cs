@@ -5,7 +5,7 @@ using ShadowShop.Service.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
-builder.AddRedisClient("basketcache");
+builder.AddRedisClient("basketCache");
 
 builder.Services.AddGrpc();
 builder.Services.AddGrpcHealthChecks();

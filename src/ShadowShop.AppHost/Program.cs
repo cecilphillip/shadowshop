@@ -10,19 +10,19 @@ builder.AddExecutable("vault-setup-script", "bash", "./.config/vault", "setup.sh
 
 var grafanaStack = builder.AddGrafanaStack("grafana", grafanaPort: 3000, otelPort: 4317);
 
-var temporalDev = builder.AddTemporalDevServer(nameSpace:"ShadowShop");
+var temporalDev = builder.AddTemporalDevServer(nameSpace: "ShadowShop");
 
-var postgresPwd = builder.AddParameter("postgresspwd", true);
+var postgresPwd = builder.AddParameter("postgresPassword", true);
 var catalogDb = builder.AddPostgres("catalog", port: 5432, password: postgresPwd)
     .WithDataVolume()
-    .AddDatabase("catalogdb");
+    .AddDatabase("catalogDb");
 
-var rabbitPwd = builder.AddParameter("rabbitmqpassword", true);
+var rabbitPwd = builder.AddParameter("rabbitmqPassword", true);
 var rmq = builder.AddRabbitMQ("rmq", password: rabbitPwd)
     .WithManagementPlugin(15672);
 
-var redisPwd = builder.AddParameter("redispwd", true);
-var redisCache = builder.AddRedisStack("basketcache")
+var redisPwd = builder.AddParameter("redisPassword", true);
+var redisCache = builder.AddRedisStack("basketCache")
     .WithPassword(redisPwd)
     .WithConfiguration("./.config/redis/redis.conf");
 
@@ -31,17 +31,17 @@ builder.AddProject<Projects.ShadowShop_CatalogInitializer>("catalogInitializer")
     .WithReference(vault)
     .WithReference(catalogDb);
 
-builder.AddProject<Projects.ShadowShop_WorkflowProcessor>("workflowprocessor")
+builder.AddProject<Projects.ShadowShop_WorkflowProcessor>("workflowProcessor")
     .WithReference(grafanaStack)
     .WithReference(vault)
     .WithReference(temporalDev)
     .WithReference(rmq);
 
-var catalogService = builder.AddProject<Projects.ShadowShop_CatalogService>("catalogservice")
+var catalogService = builder.AddProject<Projects.ShadowShop_CatalogService>("catalogService")
     .WithReference(grafanaStack)
     .WithReference(catalogDb);
 
-var basketService = builder.AddProject<Projects.ShadowShop_BasketService>("basketservice")
+var basketService = builder.AddProject<Projects.ShadowShop_BasketService>("basketService")
     .WithReference(grafanaStack)
     .WithReference(redisCache);
 
@@ -52,8 +52,10 @@ var frontend = builder.AddProject<Projects.ShadowShop_Frontend>("frontend")
     .WithReference(grafanaStack)
     .WithReference(vault);
 
-var stripeSecretKey = builder.AddParameter("stripesecretkey", true);
+// Stripe Events Proxy
+var stripeSecretKey = builder.AddParameter("stripeSecretKey", true);
 builder.AddStripeDevProxy("stripe-events-proxy", stripeSecretKey, frontend, "/webhooks/stripe");
 
-
-builder.Build().Run();
+// Run host
+var app = builder.Build();
+app.Run();
