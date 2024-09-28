@@ -38,46 +38,49 @@ public class Initializer(IServiceProvider serviceProvider, ILogger<Initializer> 
         static List<CatalogBrand> GetPreconfiguredCatalogBrands()
         {
             return [
-                new() { Brand = "Azure" },
-                new() { Brand = ".NET" },
-                new() { Brand = "Visual Studio" },
-                new() { Brand = "SQL Server" },
-                new() { Brand = "Other" }
+                new() { Brand = "Scary" },
+                new() { Brand = "Creepy" },
+                new() { Brand = "Ghoulish" },
+                new() { Brand = "Terrifying" },
+                new() { Brand = "Frightening" }
             ];
         }
 
         static List<CatalogType> GetPreconfiguredCatalogTypes()
         {
             return [
-                new() { Type = "Mug" },
-                new() { Type = "T-Shirt" },
-                new() { Type = "Sheet" },
-                new() { Type = "USB Memory Stick" }
+                new() { Type = "Pirates" },
+                new() { Type = "Vampires" },
+                new() { Type = "Skeletons" },
+                new() { Type = "Scarecrows" },
+                new() { Type = "Witches" }
             ];
         }
 
         static List<CatalogItem> GetPreconfiguredItems(DbSet<CatalogBrand> catalogBrands, DbSet<CatalogType> catalogTypes)
         {
-            var dotNet = catalogBrands.First(b => b.Brand == ".NET");
-            var other = catalogBrands.First(b => b.Brand == "Other");
+            var scary = catalogBrands.First(b => b.Brand == "Scary");
+            var creepy = catalogBrands.First(b => b.Brand == "Creepy");
 
-            var mug = catalogTypes.First(c => c.Type == "Mug");
-            var tshirt = catalogTypes.First(c => c.Type == "T-Shirt");
-            var sheet = catalogTypes.First(c => c.Type == "Sheet");
+            var pirates = catalogTypes.First(c => c.Type == "Pirates");
+            var skeletons = catalogTypes.First(c => c.Type == "Skeletons");
+            var scarecrows = catalogTypes.First(c => c.Type == "Scarecrows");
+            var vampires = catalogTypes.First(c => c.Type == "Vampires");
+            var witches = catalogTypes.First(c => c.Type == "Witches");
 
             return [
-                new() { CatalogType = tshirt, CatalogBrand = dotNet, AvailableStock = 100, Description = ".NET Bot Black Hoodie", Name = ".NET Bot Black Hoodie", Price = 19.5M, PictureFileName = "1.png" },
-                new() { CatalogType = mug, CatalogBrand = dotNet, AvailableStock = 100, Description = ".NET Black & White Mug", Name = ".NET Black & White Mug", Price= 8.50M, PictureFileName = "2.png" },
-                new() { CatalogType = tshirt, CatalogBrand = other, AvailableStock = 100, Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PictureFileName = "3.png" },
-                new() { CatalogType = tshirt, CatalogBrand = dotNet, AvailableStock = 100, Description = ".NET Foundation T-shirt", Name = ".NET Foundation T-shirt", Price = 12, PictureFileName = "4.png" },
-                new() { CatalogType = sheet, CatalogBrand = other, AvailableStock = 100, Description = "Roslyn Red Sheet", Name = "Roslyn Red Sheet", Price = 8.5M, PictureFileName = "5.png" },
-                new() { CatalogType = tshirt, CatalogBrand = dotNet, AvailableStock = 100, Description = ".NET Blue Hoodie", Name = ".NET Blue Hoodie", Price = 12, PictureFileName = "6.png" },
-                new() { CatalogType = tshirt, CatalogBrand = other, AvailableStock = 100, Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PictureFileName = "7.png" },
-                new() { CatalogType = tshirt, CatalogBrand = other, AvailableStock = 100, Description = "Kudu Purple Hoodie", Name = "Kudu Purple Hoodie", Price = 8.5M, PictureFileName = "8.png" },
-                new() { CatalogType = mug, CatalogBrand = other, AvailableStock = 100, Description = "Cup<T> White Mug", Name = "Cup<T> White Mug", Price = 12, PictureFileName = "9.png" },
-                new() { CatalogType = sheet, CatalogBrand = dotNet, AvailableStock = 100, Description = ".NET Foundation Sheet", Name = ".NET Foundation Sheet", Price = 12, PictureFileName = "10.png" },
-                new() { CatalogType = sheet, CatalogBrand = dotNet, AvailableStock = 100, Description = "Cup<T> Sheet", Name = "Cup<T> Sheet", Price = 8.5M, PictureFileName = "11.png" },
-                new() { CatalogType = tshirt, CatalogBrand = other, AvailableStock = 100, Description = "Prism White TShirt", Name = "Prism White TShirt", Price = 12, PictureFileName = "12.png" }
+                new() { CatalogType = pirates, CatalogBrand = scary, AvailableStock = 100, Description = "Dark Pirate Halloween costume", Name = "Dark Pirate", Price = 95.5M, PictureFileName = "1.png" },
+                new() { CatalogType = witches, CatalogBrand = scary, AvailableStock = 100, Description = "Evil Witch Halloween costume", Name = "Evil Witch", Price= 86.50M, PictureFileName = "2.png" },
+                new() { CatalogType = skeletons, CatalogBrand = creepy, AvailableStock = 100, Description = "Red Skeleton Hoodie Halloween costume", Name = "Red Skeleton Hoodie", Price = 120, PictureFileName = "3.png" },
+                new() { CatalogType = scarecrows, CatalogBrand = scary, AvailableStock = 100, Description = "Ghoulish Scarecrow Halloween costume", Name = "Ghoulish Scarecrow", Price = 96, PictureFileName = "4.png" },
+                new() { CatalogType = witches, CatalogBrand = creepy, AvailableStock = 100, Description = "Baba Yaga Halloween costume", Name = "Baba Yaga", Price = 160.5M, PictureFileName = "5.png" },
+                new() { CatalogType = pirates, CatalogBrand = scary, AvailableStock = 100, Description = "Cutthroat Pirate Halloween costume", Name = "Cutthroat Pirate", Price = 72, PictureFileName = "6.png" },
+                new() { CatalogType = skeletons, CatalogBrand = creepy, AvailableStock = 100, Description = "Undead Soul Halloween costume", Name = "Undead Soul", Price = 78, PictureFileName = "7.png" },
+                new() { CatalogType = skeletons, CatalogBrand = creepy, AvailableStock = 100, Description = "Pumpkin Patch Spirit Halloween costume", Name = "Pumpkin Patch Spirit", Price = 108.5M, PictureFileName = "8.png" },
+                new() { CatalogType = skeletons, CatalogBrand = creepy, AvailableStock = 100, Description = "Lady of the Graveyard Halloween costume", Name = "Lady of the Graveyard", Price = 92, PictureFileName = "9.png" },
+                new() { CatalogType = vampires, CatalogBrand = scary, AvailableStock = 100, Description = "Lord of the Vampires Halloween costume", Name = "Lord of the Vampires", Price = 89.99M, PictureFileName = "10.png" },
+                new() { CatalogType = scarecrows, CatalogBrand = scary, AvailableStock = 100, Description = "Original Patch Halloween costume", Name = "Original Patch", Price = 95.2M, PictureFileName = "11.png" },
+                new() { CatalogType = scarecrows, CatalogBrand = creepy, AvailableStock = 100, Description = "Mrs. Patch Halloween costume", Name = "Mrs. Patch", Price = 90.2M, PictureFileName = "12.png" }
             ];
         }
 

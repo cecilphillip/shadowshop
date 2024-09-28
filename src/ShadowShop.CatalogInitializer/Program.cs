@@ -15,7 +15,7 @@ builder.Configuration.AddVaultDevServerConfiguration(() => new VaultOptions
     AllowInsecure = true
 },  builder.Services);
 
-builder.AddNpgsqlDbContext<CatalogDbContext>("catalogdb", null,
+builder.AddNpgsqlDbContext<CatalogDbContext>("catalogDb", null,
     optionsBuilder => optionsBuilder.UseNpgsql(npgsqlBuilder =>
         npgsqlBuilder.MigrationsAssembly(typeof(Program).Assembly.GetName().Name)));
 
