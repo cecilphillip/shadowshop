@@ -11,9 +11,9 @@
     </ItemGroup>
     
     <ItemGroup>
-        <PackageReference Include="Aspire.StackExchange.Redis" Version="8.2.0" />
-        <PackageReference Include="Grpc.AspNetCore" Version="2.65.0" />
-        <PackageReference Include="Grpc.AspNetCore.HealthChecks" Version="2.65.0" />
+        <PackageReference Include="Aspire.StackExchange.Redis" Version="8.2.1" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.66.0" />
+        <PackageReference Include="Grpc.AspNetCore.HealthChecks" Version="2.66.0" />
     </ItemGroup>
     
     <ItemGroup>

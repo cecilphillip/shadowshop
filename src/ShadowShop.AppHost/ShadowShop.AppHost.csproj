@@ -18,10 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.AppHost" Version="8.2.0" />
-    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="8.2.0" />
-    <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="8.2.0" />
-    <PackageReference Include="Aspire.RabbitMQ.Client" Version="8.2.0" />
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="8.2.1" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="8.2.1" />
+    <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="8.2.1" />
+    <PackageReference Include="Aspire.RabbitMQ.Client" Version="8.2.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -7,11 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.RabbitMQ.Client" Version="8.2.0" />
-    <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="8.2.0" />
-    <PackageReference Include="Stripe.net" Version="45.13.0" />
+    <PackageReference Include="Aspire.RabbitMQ.Client" Version="8.2.1" />
+    <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="8.2.1" />
     <PackageReference Include="Yarp.ReverseProxy" Version="2.2.0" />
-    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.65.0" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.66.0" />
     <PackageReference Include="Grpc.Tools" Version="2.66.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
