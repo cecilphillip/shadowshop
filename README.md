@@ -22,6 +22,7 @@ for durable workflows, other customer Aspire Integrations.
 ### Run the solution
 
 * Add your [Stripe API keys](https://dashboard.stripe.com/apikeys) to the [setup.sh](./src/ShadowShop.AppHost/.config/vault/setup.sh) file.
+* Add your [Stripe Secret key](https://dashboard.stripe.com/apikeys)  to the AppHost's [appsettings.Development.json](./src/ShadowShop.AppHost/appsettings.Development.json) file.
 * Run the [App Host](./src/ShadowShop.AppHost) project
 
 
