@@ -1,8 +1,6 @@
-
 using ShadowShop.Frontend.Services;
 using Stripe;
 using Stripe.Checkout;
-using File = Stripe.File;
 
 namespace ShadowShop.Frontend;
 
@@ -28,7 +26,7 @@ public static class WebHookEndpoints
                         {
                             PaymentStatus: "paid"
                         } session:
-                           
+
                             queueClient.Publish(new FulfillOrder(session.Id), Events.CheckoutSessionCompleted);
                             break;
                     }
@@ -44,6 +42,6 @@ public static class WebHookEndpoints
 
         return group;
     }
-    
+
     record FulfillOrder(string SessionId);
 }

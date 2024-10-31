@@ -21,12 +21,6 @@ public class CheckoutWorker(IConnection rmqConnection, ITemporalClient temporalC
         
         return Task.CompletedTask;
     }
-
-    private Task OnSimpleReceived(object sender, BasicDeliverEventArgs eventArgs)
-    {
-        JsonSerializer.Deserialize<FulfillOrder>(eventArgs.Body.Span);
-        return Task.CompletedTask;
-    }
     
     private async Task OnTemporalReceived(object sender, BasicDeliverEventArgs eventArgs)
     {
