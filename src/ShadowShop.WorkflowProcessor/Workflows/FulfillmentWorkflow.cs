@@ -7,14 +7,8 @@ namespace ShadowShop.WorkflowProcessor.Workflows;
 [Workflow]
 public class FulfillmentWorkflow
 {
-    readonly RetryPolicy _retryPolicy = new RetryPolicy
-    {
-        InitialInterval = TimeSpan.FromSeconds(1),
-        MaximumInterval = TimeSpan.FromSeconds(10),
-        BackoffCoefficient = 2
-    };
-
-    private string SimpleStatus { get; set; } = "Workflow not started";
+    [WorkflowQuery]
+    public string SimpleStatus { get; set; } = "Workflow not started";
 
     [WorkflowRun]
     public async Task RunAsync(FulfillOrder orderSession)
@@ -22,14 +16,14 @@ public class FulfillmentWorkflow
         SimpleStatus = "Starting workflow";
         var activityResult = await Workflow.ExecuteActivityAsync<FulfillmentActivities, Result<bool>>(
             x => x.SendOrderConfirmation(orderSession),
-            new() { RetryPolicy = _retryPolicy, StartToCloseTimeout = TimeSpan.FromSeconds(10) });
+            new() { StartToCloseTimeout = TimeSpan.FromSeconds(10) });
 
         if (activityResult)
         {
             SimpleStatus = "Order confirmation sent";
             activityResult = await  Workflow.ExecuteActivityAsync<FulfillmentActivities, Result<bool>>(
                 x => x.UpdateInventory(orderSession),
-                new() { RetryPolicy = _retryPolicy, StartToCloseTimeout = TimeSpan.FromSeconds(10)});
+                new() { StartToCloseTimeout = TimeSpan.FromSeconds(10)});
         }
 
         if (activityResult)
@@ -37,7 +31,7 @@ public class FulfillmentWorkflow
             SimpleStatus = "Inventory updated";
             activityResult = await Workflow.ExecuteActivityAsync<FulfillmentActivities, Result<bool>>(
                 x => x.ScheduleDelivery(orderSession),
-                new() { RetryPolicy = _retryPolicy, StartToCloseTimeout = TimeSpan.FromSeconds(10)});
+                new() { StartToCloseTimeout = TimeSpan.FromSeconds(10)});
         }
 
         if (activityResult)
@@ -45,7 +39,4 @@ public class FulfillmentWorkflow
             SimpleStatus = "Delivery scheduled";
         }
     }
-    
-    [WorkflowQuery]
-    public string CurrentStatus() => SimpleStatus;
 }
