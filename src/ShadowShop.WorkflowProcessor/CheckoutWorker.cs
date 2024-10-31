@@ -12,12 +12,12 @@ public class CheckoutWorker(IConnection rmqConnection, ITemporalClient temporalC
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var channel = rmqConnection.CreateModel();
-        
-        EnsureQueue(channel, Events.CheckoutSessionCompleted);
+        var queueName = "checkout-completed-events";
+        EnsureQueue(channel, queueName);
         var consumer = new AsyncEventingBasicConsumer(channel);
         consumer.Received += OnTemporalReceived;
         
-        channel.BasicConsume(queue: Events.CheckoutSessionCompleted, autoAck: false, consumer: consumer);
+        channel.BasicConsume(queue: queueName, autoAck: false, consumer: consumer);
         
         return Task.CompletedTask;
     }

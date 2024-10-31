@@ -22,12 +22,12 @@ public static class WebHookEndpoints
                     // Do something fun
                     switch (stripeEvent.Type)
                     {
-                        case Events.CheckoutSessionCompleted when stripeEvent.Data.Object is Session
+                        case EventTypes.CheckoutSessionCompleted when stripeEvent.Data.Object is Session
                         {
                             PaymentStatus: "paid"
                         } session:
 
-                            queueClient.Publish(new FulfillOrder(session.Id), Events.CheckoutSessionCompleted);
+                            queueClient.Publish(new FulfillOrder(session.Id), "checkout-completed-events");
                             break;
                     }
 
