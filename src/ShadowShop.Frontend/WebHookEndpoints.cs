@@ -10,8 +10,9 @@ public static class WebHookEndpoints
     {
         var group = routes.MapGroup("/webhooks");
 
-        group.MapPost("stripe", async (HttpRequest request, IConfiguration config, QueueClient queueClient) =>
+        group.MapPost("stripe", async (HttpRequest request, IConfiguration config, QueueClient queueClient, ILoggerFactory loggerFactory) =>
             {
+                var logger =  loggerFactory.CreateLogger("StripeWebhooks");
                 try
                 {
                     var payload = await new StreamReader(request.Body).ReadToEndAsync();
@@ -35,6 +36,7 @@ public static class WebHookEndpoints
                 }
                 catch (StripeException e)
                 {
+                    logger.LogError(e, "Stripe Error");
                     return Results.BadRequest(e.Message);
                 }
             }

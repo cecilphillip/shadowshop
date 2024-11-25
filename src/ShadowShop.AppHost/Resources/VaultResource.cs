@@ -33,17 +33,18 @@ public static class VaultServerBuilderExtensions
             .WithEnvironment("VAULT_API_ADDR", apiAddress)
             .WithEnvironment("VAULT_ADDR", apiAddress)
             .WithEnvironment("VAULT_DEV_LISTEN_ADDRESS", address)
+            .WithHttpHealthCheck("/v1/sys/health")
             .ExcludeFromManifest();
     }
 
     public static IResourceBuilder<TDestination> WithReference<TDestination>(
         this IResourceBuilder<TDestination> builder, IResourceBuilder<VaultServerResource> source,
         string? rootTokenId = null)
-        where TDestination : IResourceWithEnvironment
+        where TDestination : IResourceWithEnvironment, IResourceWithWaitSupport
     {
         builder.WithReference(source as IResourceBuilder<IResourceWithServiceDiscovery>);
         
-        return builder.WithEnvironment(ctx =>
+        return builder.WaitFor(source).WithEnvironment(ctx =>
         {
             ctx.EnvironmentVariables["VAULT_ADDR"] = source.Resource.GetEndpoint(VaultServerResource.PrimaryEndpointName);
             ctx.EnvironmentVariables["VAULT_PORT"] =

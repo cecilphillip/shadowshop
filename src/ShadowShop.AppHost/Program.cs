@@ -5,7 +5,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 // Service Dependencies
 var vault = builder.AddVaultDevServer("vault");
 
-builder.AddExecutable("vault-setup-script", "bash", "./.config/vault", "setup.sh")
+var vaultScript = builder.AddExecutable("vault-setup-script", "bash", "./.config/vault", "setup.sh")
     .WithReference(vault);
 
 var grafanaStack = builder.AddGrafanaStack("grafana", grafanaPort: 3000, otelPort: 4317);
@@ -24,18 +24,22 @@ var rmq = builder.AddRabbitMQ("rmq", password: rabbitPwd)
 var redisPwd = builder.AddParameter("redisPassword", true);
 var redisCache = builder.AddRedisStack("basketCache")
     .WithPassword(redisPwd)
+    .WithRedisInsight()
     .WithConfiguration("./.config/redis/redis.conf");
 
 // Application Projects
 builder.AddProject<Projects.ShadowShop_CatalogInitializer>("catalogInitializer")
     .WithReference(vault)
-    .WithReference(catalogDb);
+    .WithReference(catalogDb)
+    .WaitForCompletion(vaultScript);
 
 builder.AddProject<Projects.ShadowShop_WorkflowProcessor>("workflowProcessor")
     .WithReference(grafanaStack)
     .WithReference(vault)
     .WithReference(temporalDev)
-    .WithReference(rmq);
+    .WithReference(rmq)
+    .WaitFor(temporalDev)
+    .WaitFor(rmq);
 
 var catalogService = builder.AddProject<Projects.ShadowShop_CatalogService>("catalogService")
     .WithReference(grafanaStack)
@@ -50,7 +54,8 @@ var frontend = builder.AddProject<Projects.ShadowShop_Frontend>("frontend")
     .WithReference(catalogService)
     .WithReference(rmq)
     .WithReference(grafanaStack)
-    .WithReference(vault);
+    .WithReference(vault)
+    .WaitFor(rmq);
 
 // Stripe Events Proxy
 var stripeSecretKey = builder.AddParameter("stripeSecretKey", true);
