@@ -9,6 +9,7 @@ using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using Stripe;
+using VaultSharp.Extensions.Configuration;
 
 namespace ShadowShop.Service.Extensions;
 
@@ -30,6 +31,16 @@ public static class Extensions
             // Turn on service discovery by default
             http.AddServiceDiscovery();
         });
+
+        return builder;
+    }
+
+    public static IHostApplicationBuilder AddConfigurationDefaults(this IHostApplicationBuilder builder)
+    {
+        builder.Configuration.AddVaultConfiguration(
+            () => new VaultOptions(builder.Configuration["VAULT_ADDR"] ?? string.Empty, builder.Configuration["VAULT_TOKEN"], keyPrefix:"stripe", insecureConnection: true), 
+            "stripe", builder.Configuration["VAULT_APP_MOUNT"] ?? string.Empty
+        );
 
         return builder;
     }

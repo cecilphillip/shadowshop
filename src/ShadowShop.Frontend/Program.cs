@@ -8,12 +8,8 @@ using VaultSharp.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
-
-builder.Configuration.AddVaultConfiguration(
-    () => new VaultOptions(builder.Configuration["VAULT_ADDR"] ?? string.Empty, builder.Configuration["VAULT_TOKEN"], keyPrefix:"stripe", insecureConnection: true), 
-    "stripe", builder.Configuration["VAULT_APP_MOUNT"] ?? string.Empty
-);
+builder.AddServiceDefaults()
+    .AddConfigurationDefaults();
 
 builder.AddRabbitMQClient("rmq");
 

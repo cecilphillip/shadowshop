@@ -24,6 +24,8 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.9.0" />
     <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.9.0" />
     <PackageReference Include="Stripe.net" Version="47.1.0" />
+    <PackageReference Include="VaultSharp" Version="1.17.5.1" />
+    <PackageReference Include="VaultSharp.Extensions.Configuration" Version="1.0.5" />
   </ItemGroup>
 
 </Project>
