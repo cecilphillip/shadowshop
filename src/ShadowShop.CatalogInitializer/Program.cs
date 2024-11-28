@@ -2,18 +2,15 @@ using Microsoft.EntityFrameworkCore;
 using ShadowShop.CatalogDb;
 using ShadowShop.CatalogInitializer;
 using ShadowShop.Service.Extensions;
+using VaultSharp.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
-
-builder.Configuration.AddVaultDevServerConfiguration(() => new VaultOptions
-{
-    VaultAddress = builder.Configuration["VAULT_ADDR"] ?? string.Empty,
-    VaultToken = builder.Configuration["VAULT_TOKEN"] ?? string.Empty,
-    VaultMount = builder.Configuration["VAULT_APP_MOUNT"] ?? string.Empty,
-    AllowInsecure = true
-},  builder.Services);
+builder.Configuration.AddVaultConfiguration(
+    () => new VaultOptions(builder.Configuration["VAULT_ADDR"] ?? string.Empty, builder.Configuration["VAULT_TOKEN"], keyPrefix:"stripe", insecureConnection: true), 
+    "stripe", builder.Configuration["VAULT_APP_MOUNT"] ?? string.Empty
+);
 
 builder.AddNpgsqlDbContext<CatalogDbContext>("catalogDb", null,
     optionsBuilder => optionsBuilder.UseNpgsql(npgsqlBuilder =>

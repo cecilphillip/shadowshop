@@ -27,7 +27,7 @@ public class Initializer(IServiceProvider serviceProvider, ILogger<Initializer> 
 
     private async Task InitializeDatabaseAsync(CatalogDbContext dbContext, CancellationToken cancellationToken)
     {
-        using var activity = _activitySource.StartActivity("Initializing catalog database", ActivityKind.Client);
+        using var activity = _activitySource.StartActivity();
         await dbContext.Database.EnsureCreatedAsync(cancellationToken);
     }
 
@@ -111,7 +111,7 @@ public class Initializer(IServiceProvider serviceProvider, ILogger<Initializer> 
 
             logger.LogInformation("Seeding {CatalogItemCount} catalog items", items.Count);
             
-            await SeedStripeAsync(items, cancellationToken);
+            await SeedStripeAsync(cancellationToken);
             
             await dbContext.SaveChangesAsync(cancellationToken);
         }
@@ -119,7 +119,7 @@ public class Initializer(IServiceProvider serviceProvider, ILogger<Initializer> 
         return;
 
         // Stripe
-        async Task<bool> AnyExistingProducts(CancellationToken cancelToken)
+        async Task<bool> AnyExistingProductsAsync(CancellationToken cancelToken)
         {
             var listOptions = new ProductListOptions { Active = true, Limit = 1 };
             var productService = new ProductService(stripeClient);
@@ -174,9 +174,9 @@ public class Initializer(IServiceProvider serviceProvider, ILogger<Initializer> 
             catalogItem.StripePriceId = price.Id;
         }
 
-        async Task SeedStripeAsync(IEnumerable<CatalogItem> items, CancellationToken cancelToken)
+        async Task SeedStripeAsync(CancellationToken cancelToken)
         {
-            if (!await AnyExistingProducts(cancelToken))
+            if (!await AnyExistingProductsAsync(cancelToken))
             {
                 foreach (var catalogItem in dbContext.CatalogItems.Local)
                 {

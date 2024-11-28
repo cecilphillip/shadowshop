@@ -33,14 +33,6 @@ builder.AddProject<Projects.ShadowShop_CatalogInitializer>("catalogInitializer")
     .WithReference(catalogDb)
     .WaitForCompletion(vaultScript);
 
-builder.AddProject<Projects.ShadowShop_WorkflowProcessor>("workflowProcessor")
-    .WithReference(grafanaStack)
-    .WithReference(vault)
-    .WithReference(temporalDev)
-    .WithReference(rmq)
-    .WaitFor(temporalDev)
-    .WaitFor(rmq);
-
 var catalogService = builder.AddProject<Projects.ShadowShop_CatalogService>("catalogService")
     .WithReference(grafanaStack)
     .WithReference(catalogDb);
@@ -48,6 +40,14 @@ var catalogService = builder.AddProject<Projects.ShadowShop_CatalogService>("cat
 var basketService = builder.AddProject<Projects.ShadowShop_BasketService>("basketService")
     .WithReference(grafanaStack)
     .WithReference(redisCache);
+
+builder.AddProject<Projects.ShadowShop_WorkflowProcessor>("workflowProcessor")
+    .WithReference(grafanaStack)
+    .WithReference(vault)
+    .WithReference(temporalDev)
+    .WithReference(rmq)
+    .WaitFor(temporalDev)
+    .WaitFor(rmq);
 
 var frontend = builder.AddProject<Projects.ShadowShop_Frontend>("frontend")
     .WithReference(basketService)

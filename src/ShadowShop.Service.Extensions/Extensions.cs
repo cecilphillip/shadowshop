@@ -104,7 +104,7 @@ public static class Extensions
     
     public static IServiceCollection AddStripe(this IServiceCollection services,
         IConfiguration config) {
-        StripeConfiguration.ApiKey = config.GetValue<string>("STRIPE_SECRET_KEY");
+        StripeConfiguration.ApiKey = config.GetValue<string>("stripe:secret_key");
 
         var appInfo = new AppInfo { Name = "ShadowShop", Version = "0.1.0" };
         StripeConfiguration.AppInfo = appInfo;

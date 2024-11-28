@@ -13,7 +13,7 @@ public class VaultServerResource(string name) : ContainerResource(name), IResour
 public static class VaultServerBuilderExtensions
 {
     public static IResourceBuilder<VaultServerResource> AddVaultDevServer(this IDistributedApplicationBuilder builder,
-        string name, int port = VaultServerResource.DefaultContainerPort, string? rootTokenId = VaultServerResource.DefaultTokenId)
+        string name, string? rootTokenId = VaultServerResource.DefaultTokenId)
     {
         var address = $"0.0.0.0:{VaultServerResource.DefaultContainerPort}";
         var apiAddress = $"http://{address}";
@@ -23,7 +23,7 @@ public static class VaultServerBuilderExtensions
             .WithImage("hashicorp/vault")
             .WithImageRegistry("docker.io")
             .WithHttpEndpoint(
-                port: port,
+                port: VaultServerResource.DefaultContainerPort,
                 targetPort: VaultServerResource.DefaultContainerPort,
                 name: VaultServerResource.PrimaryEndpointName
             )

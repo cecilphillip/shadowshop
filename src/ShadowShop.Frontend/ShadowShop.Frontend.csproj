@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Aspire.RabbitMQ.Client" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="9.0.0" />
+    <PackageReference Include="VaultSharp.Extensions.Configuration" Version="1.0.5" />
     <PackageReference Include="Yarp.ReverseProxy" Version="2.2.0" />
     <PackageReference Include="Grpc.Net.ClientFactory" Version="2.67.0" />
     <PackageReference Include="Grpc.Tools" Version="2.67.0">

@@ -16,7 +16,7 @@ public static class WebHookEndpoints
                 try
                 {
                     var payload = await new StreamReader(request.Body).ReadToEndAsync();
-                    var webhookSecret = config.GetValue<string>("STRIPE_WEBHOOK_SECRET");
+                    var webhookSecret = config.GetValue<string>("stripe:webhook_secret");
                     var stripeEvent = EventUtility.ConstructEvent(
                         payload, request.Headers["Stripe-Signature"], webhookSecret);
 

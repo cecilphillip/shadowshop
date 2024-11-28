@@ -2,19 +2,16 @@ using ShadowShop.WorkflowProcessor;
 using ShadowShop.Service.Extensions;
 using ShadowShop.WorkflowProcessor.Workflows;
 using Temporalio.Extensions.Hosting;
+using VaultSharp.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-builder.Configuration.AddVaultDevServerConfiguration(() => new VaultOptions
-{
-    VaultAddress = builder.Configuration["VAULT_ADDR"] ?? string.Empty,
-    VaultToken = builder.Configuration["VAULT_TOKEN"] ?? string.Empty,
-    VaultMount = builder.Configuration["VAULT_APP_MOUNT"] ?? string.Empty,
-    AllowInsecure = true
-},  builder.Services);
-
+builder.Configuration.AddVaultConfiguration(
+    () => new VaultOptions(builder.Configuration["VAULT_ADDR"] ?? string.Empty, builder.Configuration["VAULT_TOKEN"], keyPrefix:"stripe", insecureConnection: true), 
+    "stripe", builder.Configuration["VAULT_APP_MOUNT"] ?? string.Empty
+);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
