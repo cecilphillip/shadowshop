@@ -1,7 +1,7 @@
 # Shadow Shop Sample 
 A modified version of the [Aspire Shop](https://github.com/dotnet/aspire-samples/tree/main/samples/AspireShop) sample
 application that adds integration with [Stripe](https://stripe.com) for payment processing, [temporal](https://temporal.io/)
-for durable workflows, other customer Aspire Integrations. 
+for durable workflows, other custom Aspire Integrations. 
 
 ![Architecture Diagram](./docs/images/diagram_architecture.png)
 
