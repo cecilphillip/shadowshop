@@ -4,6 +4,7 @@ using ShadowShop.Frontend.Components;
 using ShadowShop.Frontend.Services;
 using ShadowShop.GrpcBasket;
 using ShadowShop.Service.Extensions;
+using Stripe.Extensions.AspNetCore;
 using VaultSharp.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,12 @@ builder.AddServiceDefaults()
 
 builder.AddRabbitMQClient("rmq");
 
-builder.Services.AddStripe(builder.Configuration);
+builder.Services.AddStripe(configureOptions: options =>
+{
+    options.ApiKey = builder.Configuration.GetValue<string>("stripe:secret_key");
+    options.WebhookSecret = builder.Configuration.GetValue<string>("stripe:webhook_secret");
+    options.PublicKey = builder.Configuration.GetValue<string>("stripe:public_key");
+});
 builder.Services.AddHttpForwarderWithServiceDiscovery();
 
 builder.Services.AddHttpServiceReference<CatalogServiceClient>("https+http://catalogService", healthRelativePath: "health");
@@ -43,7 +49,7 @@ app.MapRazorComponents<App>();
 
 app.MapForwarder("/catalog/images/{id}", "https+http://catalogService", "/api/v1/catalog/items/{id}/image");
 
-app.MapWebhooks();
+app.MapStripeWebhookHandler<CustomWebhookHandler>("/webhooks/stripe");
 
 app.MapDefaultEndpoints();
 

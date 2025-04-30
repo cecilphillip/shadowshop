@@ -3,7 +3,8 @@ using ShadowShop.AppHost.Resources;
 var builder = DistributedApplication.CreateBuilder(args);
 
 // Service Dependencies
-var vault = builder.AddVaultDevServer("vault");
+var vault = builder.AddVaultDevServer("vault")
+    .WithUrlForEndpoint("http", url => url.DisplayText = "Vault UI (http)");;
 
 var vaultScript = builder.AddExecutable("vault-setup-script", "bash", "./.config/vault", "setup.sh")
     .WithReference(vault);
@@ -16,7 +17,10 @@ var postgresPwd = builder.AddParameter("postgresPassword", true);
 var postgres = builder.AddPostgres("catalog", port: 5432, password: postgresPwd)
     .WithLifetime(ContainerLifetime.Persistent)
     .WithDataBindMount(".temp/postgres/data")
-    .WithPgWeb();
+    .WithPgWeb(resource =>
+    {
+        resource.WithUrlForEndpoint("http", url => url.DisplayText = "PGWeb (http)");
+    });
  var catalogDb = postgres.AddDatabase("catalogDb");
 
 var rabbitPwd = builder.AddParameter("rabbitmqPassword", true);
@@ -59,6 +63,9 @@ var frontend = builder.AddProject<Projects.ShadowShop_Frontend>("frontend")
     .WithReference(grafanaStack)
     .WithReference(vault)
     .WaitFor(rmq);
+
+frontend.WithUrlForEndpoint("https", url => url.DisplayText = "Main (https)")
+    .WithUrlForEndpoint("http", url => url.DisplayText = "Main (http)");
 
 // Stripe Events Proxy
 var stripeSecretKey = builder.AddParameter("stripeSecretKey", true);

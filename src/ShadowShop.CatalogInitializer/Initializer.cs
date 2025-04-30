@@ -16,7 +16,7 @@ public class Initializer(IServiceProvider serviceProvider, ILogger<Initializer> 
     {
         using var scope = serviceProvider.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-        var stripeClient = scope.ServiceProvider.GetRequiredService<IStripeClient>();
+        var stripeClient = scope.ServiceProvider.GetRequiredService<StripeClient>();
 
         var sw = Stopwatch.StartNew();
         await InitializeDatabaseAsync(dbContext, cancellationToken);
@@ -31,7 +31,7 @@ public class Initializer(IServiceProvider serviceProvider, ILogger<Initializer> 
         await dbContext.Database.EnsureCreatedAsync(cancellationToken);
     }
 
-    private async Task SeedAsync(CatalogDbContext dbContext, IStripeClient stripeClient, CancellationToken cancellationToken)
+    private async Task SeedAsync(CatalogDbContext dbContext, StripeClient stripeClient, CancellationToken cancellationToken)
     {
         logger.LogInformation("Seeding database");
 

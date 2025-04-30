@@ -16,7 +16,12 @@ builder.AddNpgsqlDbContext<CatalogDbContext>("catalogDb", null,
 builder.Services.AddOpenTelemetry()
     .WithTracing(tracing => tracing.AddSource(Initializer.ActivitySourceName));
 
-builder.Services.AddStripe(builder.Configuration);
+builder.Services.AddStripe(configureOptions: options =>
+{
+    options.ApiKey = builder.Configuration.GetValue<string>("stripe:secret_key");
+    options.WebhookSecret = builder.Configuration.GetValue<string>("stripe:webhook_secret");
+    options.PublicKey = builder.Configuration.GetValue<string>("stripe:public_key");
+});
 builder.Services.AddSingleton<Initializer>();
 builder.Services.AddHostedService(sp => sp.GetRequiredService<Initializer>());
 builder.Services.AddHealthChecks()

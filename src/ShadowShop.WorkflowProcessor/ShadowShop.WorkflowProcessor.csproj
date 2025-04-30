@@ -11,6 +11,7 @@
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.4" />
+        <PackageReference Include="Stripe.Extensions.DependencyInjection" Version="0.2.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
         <PackageReference Include="Temporalio.Extensions.Hosting" Version="1.6.0" />
     </ItemGroup>
