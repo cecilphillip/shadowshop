@@ -13,19 +13,21 @@ var grafanaStack = builder.AddGrafanaStack("grafana", grafanaPort: 3000, otelPor
 var temporalDev = builder.AddTemporalDevServer(nameSpace: "ShadowShop");
 
 var postgresPwd = builder.AddParameter("postgresPassword", true);
-var catalogDb = builder.AddPostgres("catalog", port: 5432, password: postgresPwd)
-    .WithDataVolume()
-    .AddDatabase("catalogDb");
+var postgres = builder.AddPostgres("catalog", port: 5432, password: postgresPwd)
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithDataBindMount(".temp/postgres/data")
+    .WithPgWeb();
+ var catalogDb = postgres.AddDatabase("catalogDb");
 
 var rabbitPwd = builder.AddParameter("rabbitmqPassword", true);
 var rmq = builder.AddRabbitMQ("rmq", password: rabbitPwd)
     .WithManagementPlugin(15672);
 
-var redisPwd = builder.AddParameter("redisPassword", true);
-var redisCache = builder.AddRedisStack("basketCache")
-    .WithPassword(redisPwd)
+var redisCache = builder.AddRedis("basketCache")
+    .WithDataBindMount(".temp/redis/data")
+    .WithBindMount("./.config/redis", "/usr/local/etc/redis")                 
     .WithRedisInsight()
-    .WithConfiguration("./.config/redis/redis.conf");
+    .WithLifetime(ContainerLifetime.Persistent);
 
 // Application Projects
 builder.AddProject<Projects.ShadowShop_CatalogInitializer>("catalogInitializer")
@@ -39,6 +41,7 @@ var catalogService = builder.AddProject<Projects.ShadowShop_CatalogService>("cat
 
 var basketService = builder.AddProject<Projects.ShadowShop_BasketService>("basketService")
     .WithReference(grafanaStack)
+    .WaitFor(redisCache)
     .WithReference(redisCache);
 
 builder.AddProject<Projects.ShadowShop_WorkflowProcessor>("workflowProcessor")

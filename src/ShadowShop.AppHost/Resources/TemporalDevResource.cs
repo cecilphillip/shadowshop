@@ -17,7 +17,7 @@ public static class TemporalDevBuilderExtensions
         int uiPort = TemporalDevResource.DefaultUIEndpointPort, int targetUiPort = TemporalDevResource.DefaultUIEndpointPort)
     {
         return builder.AddResource(new TemporalDevResource(name))
-            .WithImage("")
+            .WithImage("placeholder")
             .WithDockerfile("./.config/temporal")
             .WithBuildArg("SERVICE_PORT", targetServicePort)
             .WithBuildArg("NAMESPACE", nameSpace)

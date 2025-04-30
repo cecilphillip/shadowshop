@@ -14,8 +14,7 @@ for durable workflows, other custom Aspire Integrations.
 ## Getting Setup
 
 ### Prerequisites
-- [.NET SDK](https://get.dot.net/) 8.0 or later
-- [.NET Aspire workload](https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/setup-tooling?tabs=linux&pivots=dotnet-cli)
+- [.NET SDK](https://get.dot.net/) 9.0 or later
 - [Stripe account](https://dashboard.stripe.com) & [Stripe CLI](https://stripe.com/docs/stripe-cli)
 - [Docker](https://www.docker.com)
 
